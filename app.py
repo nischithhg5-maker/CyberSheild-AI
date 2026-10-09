@@ -44,20 +44,27 @@ if st.button("Analyze Message"):
         # Calculate the risk score
         risk_score = min(len(found) * 20,100)
 
-        if "immediately" in text or "today" in text:
-            risk_score += 10
-        
-        if "otp" in text or "one-time password" in text:
-                risk_score += 40
+        # Urgency and threat detection
+if any(word in text for word in ["immediately", "today", "urgent", "within 24 hours"]):
+    risk_score += 20
 
-        if "share your otp" in text or "send your otp" in text:
-                risk_score += 30
+# Bank account threats
+if any(word in text for word in ["account will be blocked", "account suspended", "verify your details"]):
+    risk_score += 40
 
-        if "http://" in text or "https://" in text:
-            risk_score += 20
+# OTP requests
+if "otp" in text or "one-time password" in text:
+    risk_score += 40
 
-        risk_score = min(risk_score, 100)
+if "share your otp" in text or "send your otp" in text:
+    risk_score += 30
 
+# Suspicious links
+if "http://" in text or "https://" in text or "click this link" in text:
+    risk_score += 20
+
+# Keep the score between 0 and 100
+risk_score = min(risk_score, 100)
         st.divider()
         st.subheader("📊 Security Analysis")
 
