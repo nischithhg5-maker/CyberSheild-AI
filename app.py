@@ -42,10 +42,16 @@ if st.button("Analyze Message"):
         ]
 
         # Calculate the risk score
-        risk_score = min(len(found) * 15, 60)
+        risk_score = min(len(found) * 20,100)
 
         if "immediately" in text or "today" in text:
             risk_score += 10
+        
+        if "otp" in text or "one-time password" in text:
+                risk_score += 40
+
+        if "share your otp" in text or "send your otp" in text:
+                risk_score += 30
 
         if "http://" in text or "https://" in text:
             risk_score += 20
