@@ -1,57 +1,83 @@
-# @title
-import unittest
+import streamlit as st
 
+st.set_page_config(
+    page_title="CyberShield AI",
+    page_icon="🛡️"
+)
 
-def calculate_risk(text):
-    text = text.lower()
-    score = 0
+st.title("🛡️ CyberShield AI")
+st.subheader("AI-Powered Scam and Phishing Detector")
 
-    warning_words = [
-        "otp",
-        "password",
-        "urgent",
-        "verify your account",
-        "prize",
-        "bank details",
-        "click here",
-    ]
+st.write(
+    "Check suspicious messages before clicking links "
+    "or sharing personal information."
+)
 
-    for word in warning_words:
-        if word in text:
-            score += 10
+st.info("Demo version: risk scoring uses simple rules.")
 
-    if "http://" in text or "https://" in text:
-        score += 20
+message = st.text_area("Paste a suspicious message here:")
 
-    return min(score, 100)
+if st.button("Analyze Message"):
+    if not message.strip():
+        st.warning("Please enter a message first.")
+    else:
+        suspicious_words = [
+            "urgent",
+            "verify your account",
+            "password",
+            "click here",
+            "prize",
+            "bank details",
+            "otp",
+            "won",
+            "claim now",
+            "limited time"
+        ]
 
+        text = message.lower()
 
-class TestCyberShield(unittest.TestCase):
+        found = [
+            word for word in suspicious_words
+            if word in text
+        ]
 
-    def test_otp_warning(self):
-        self.assertGreater(
-            calculate_risk("Share your OTP urgently"),
-            0
-        )
+        # Calculate the risk score
+        risk_score = min(len(found) * 15, 60)
 
-    def test_suspicious_link(self):
-        self.assertGreater(
-            calculate_risk("Verify your account https://example.com"),
-            0
-        )
+        if "immediately" in text or "today" in text:
+            risk_score += 10
 
-    def test_empty_message(self):
-        self.assertEqual(calculate_risk(""), 0)
+        if "http://" in text or "https://" in text:
+            risk_score += 20
 
-    def test_risk_never_exceeds_100(self):
-        self.assertLessEqual(
-            calculate_risk("OTP password urgent prize " * 20),
-            100
-        )
+        risk_score = min(risk_score, 100)
 
+        st.divider()
+        st.subheader("📊 Security Analysis")
 
-if __name__ == "__main__":
-    # Run the tests programmatically to avoid any interactive/notebook argv conflicts
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestCyberShield)
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)
+        st.metric("Risk Score", f"{risk_score}/100")
+        st.progress(risk_score / 100)
+
+        if risk_score >= 60:
+            st.error("🔴 HIGH RISK — Be extremely cautious.")
+        elif risk_score >= 30:
+            st.warning("🟠 MEDIUM RISK — Check carefully.")
+        else:
+            st.success("🟢 LOW RISK — Few warning signs detected.")
+
+        if found:
+            st.write("Warning signs detected:")
+            st.write(", ".join(found))
+        else:
+            st.write("No listed warning words detected.")
+
+        if risk_score >= 30:
+            st.info(
+                "Do not click suspicious links or share "
+                "passwords, bank details, or OTPs. "
+                "Verify the sender through an official channel."
+            )
+        else:
+            st.caption(
+                "A low score does not guarantee the message is safe."
+            )
