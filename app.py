@@ -65,6 +65,7 @@ if "http://" in text or "https://" in text or "click this link" in text:
 
 # Keep the score between 0 and 100
 risk_score = min(risk_score, 100)
+        
         st.divider()
         st.subheader("📊 Security Analysis")
 
