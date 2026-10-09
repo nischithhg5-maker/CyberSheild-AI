@@ -41,8 +41,8 @@ if st.button("Analyze Message"):
             if word in text
         ]
 
-        # Calculate the risk score
-        risk_score = min(len(found) * 20,100)
+# Calculate the risk score
+risk_score = min(len(found) * 20,100)
 
 # Urgency and threat detection
 if any(word in text for word in ["immediately", "today", "urgent", "within"]):
