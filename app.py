@@ -72,26 +72,26 @@ st.subheader("📊 Security Analysis")
 st.metric("Risk Score", f"{risk_score}/100")
 st.progress(risk_score / 100)
 
-        if risk_score >= 60:
-            st.error("🔴 HIGH RISK — Be extremely cautious.")
-        elif risk_score >= 30:
-            st.warning("🟠 MEDIUM RISK — Check carefully.")
-        else:
-            st.success("🟢 LOW RISK — Few warning signs detected.")
+if risk_score >= 60:
+    st.error("🔴 HIGH RISK - Be extremely cautious.")
+elif risk_score >= 30:
+    st.warning("🟠 MEDIUM RISK - Check carefully.")
+else:
+    st.success("🟢 LOW RISK - Few warning signs detected.")
 
-        if found:
-            st.write("Warning signs detected:")
-            st.write(", ".join(found))
-        else:
-            st.write("No listed warning words detected.")
+if found:
+    st.write("Warning signs detected:")
+    st.write(", ".join(found))
+else:
+    st.write("No listed warning words detected.")
 
-        if risk_score >= 30:
-            st.info(
-                "Do not click suspicious links or share "
-                "passwords, bank details, or OTPs. "
-                "Verify the sender through an official channel."
-            )
-        else:
-            st.caption(
-                "A low score does not guarantee the message is safe."
-            )
+if risk_score >= 30:
+    st.info(
+        "Do not click suspicious links or share "
+        "passwords, bank details, or OTPs. "
+        "Verify the sender through an official channel."
+    )
+else:
+    st.caption(
+        "A low score does not guarantee the message is safe."
+    )
