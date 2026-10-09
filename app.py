@@ -66,11 +66,11 @@ if "http://" in text or "https://" in text or "click this link" in text:
 # Keep the score between 0 and 100
 risk_score = min(risk_score, 100)
         
-        st.divider()
-        st.subheader("📊 Security Analysis")
+st.divider()
+st.subheader("📊 Security Analysis")
 
-        st.metric("Risk Score", f"{risk_score}/100")
-        st.progress(risk_score / 100)
+st.metric("Risk Score", f"{risk_score}/100")
+st.progress(risk_score / 100)
 
         if risk_score >= 60:
             st.error("🔴 HIGH RISK — Be extremely cautious.")
